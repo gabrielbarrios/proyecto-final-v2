@@ -6,13 +6,13 @@
     <div>
         Usuarios :
     </div>
-    <hr/><h3>Numero de usuarios     ({{ users.count }}) name {{ users.username }}  tweets {{ tweet.count }}</h3>
-    {% for user in users %}
+    <hr/><h3>Numero de usuarios     ({{ users.count }}) </h3>
+    {% for user in users.all %}
     <div>
-        <h3> {{ user.last_name }}</h3>
-        <a img="{{ user.image_profile }}"></a>
+        <h3> {{ user.users.last_name }}</h3>
+        <a img="{{ user.users.image_profile }}"></a>
 	<div class="comments">
-            {% for tweet in user.tweets.all %}
+            {% for tweet in user.users.tweets.all %}
             <div>Tweet({{ tweet.pk }})    : {{ tweet.status }}</div>
             {% endfor %}
         </div>
