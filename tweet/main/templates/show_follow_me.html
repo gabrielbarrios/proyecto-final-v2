@@ -1,0 +1,25 @@
+<html>
+<head>
+	<title>{{ users.name }} - Users</title>
+	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}estilo.css">
+</head>
+<body>
+	<a href="{% url users %}">User</a>
+	<h1>{{ users_owner.first_name }} {{ users_owner.last_name }}</h1>
+	<p>Nick : {{ users_owner.username }}</p>
+		<ul>
+			<li><h3>Follower:</h3>
+				<p>{% for follow in users_owner.following.all %}
+						<div><p>ID : {{ follow.pk }} - Acosador {{ follow.first_name }}</p></div>
+						<ol>
+							{% for tweet in follow.tweets.all %}
+								<div><li>tweet ({{ tweet.pk }}) - status: {{ tweet.status }} <br/> Created_at  :  {{tweet.created_at}} </li><br/></div>
+							{% endfor %}
+						</ol>
+						<br/>
+					{% endfor %}
+				</p>
+		</li>
+		</ul>
+</body>
+</html>

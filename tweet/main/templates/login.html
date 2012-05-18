@@ -1,0 +1,26 @@
+<html>
+	<head>
+	<meta charset="utf-8"/>
+	<title></title>
+	</head>
+	<body>
+		<p>Formulario MBB</p>
+		{% if menerror %}
+			<p>{{ menerror }}</p>
+		{% endif %}
+		<p></p>
+		{% csrf_token %}
+		<form method="POST">
+		{% csrf_token %}
+		{{ form.as_p}}
+		<input type="submit" value="Iniciar Sesion"/>
+		</form></br>
+		<br>
+		<a href="{% url registration.views.register %}" > Register </a>
+		<br>
+		<br>
+		<a href="{% url django.contrib.auth.views.password_reset %}">Forgot your password?</a>
+		<br>
+		<br>
+	</body>
+</html>

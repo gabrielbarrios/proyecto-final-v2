@@ -1,0 +1,24 @@
+body {
+	background-color:#34bc9d;		
+}		
+ul {
+	padding: 0;
+	margin: 0;
+	list-style: none;
+  }
+
+li ul {
+	display: none;
+	position: absolute; 
+	top: 1em;
+	left: 0;
+}
+li > ul {
+	top: auto;
+	left: auto;
+}
+#image {
+	width: 150px; height:150px;
+}
+li:hover ul, li.over ul{ display: block; }
+

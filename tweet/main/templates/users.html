@@ -1,0 +1,22 @@
+<html>
+<head>
+    <title>Users</title>
+</head>
+<body>
+    <div>
+        Usuarios :
+    </div>
+    <hr/><h3>Numero de usuarios     ({{ users.count }}) name {{ users.username }}  tweets {{ tweet.count }}</h3>
+    {% for user in users %}
+    <div>
+        <h3> {{ user.last_name }}</h3>
+        <a img="{{ user.image_profile }}"></a>
+	<div class="comments">
+            {% for tweet in user.tweets.all %}
+            <div>Tweet({{ tweet.pk }})    : {{ tweet.status }}</div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+</body>
+</html>
