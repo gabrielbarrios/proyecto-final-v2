@@ -15,7 +15,7 @@ def users(request):
     users = User.objects.all()
     return render_to_response('users.html', {
         'users': users,
-    })
+    },RequestContext(request))
     
 @login_required
 def index(request):
