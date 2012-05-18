@@ -10,7 +10,7 @@
     {% for user in users.all %}
     <div>
         <h3> {{ user.users.last_name }}</h3>
-        <a img="{{ user.users.image_profile }}"></a>
+        <img id="image" src="{{ MEDIA_URL }}{{ user.users.image_profile }}"/>
 	<div class="comments">
             {% for tweet in user.users.tweets.all %}
             <div>Tweet({{ tweet.pk }})    : {{ tweet.status }}</div>
