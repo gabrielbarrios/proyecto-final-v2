@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class User(models.Model):
-	user = models.OneToOneField(User)	
+	user = models.OneToOneField(User, related_name='users')	
 	first_name = models.CharField(max_length = 50)
 	last_name = models.CharField(max_length = 50)	
 	image_profile = models.ImageField(upload_to = 'image')

@@ -5,11 +5,11 @@
 </head>
 <body>
 	<a href="{% url users %}">User</a>
-	<h1>{{ users_owner.first_name }} {{ users_owner.last_name }}</h1>
+	<h1>nombre : {{ users_owner.users.first_name }} {{ users_owner.users.last_name }}</h1>
 	<p>Nick : {{ users_owner.username }}</p>
 		<ul>
 			<li><h3>Follower:</h3>
-				<p>{% for follow in users_owner.following.all %}
+				<p>{% for follow in users_owner.users.following.all %}
 						<div><p>ID : {{ follow.pk }} - Acosador {{ follow.first_name }}</p></div>
 						<ol>
 							{% for tweet in follow.tweets.all %}
