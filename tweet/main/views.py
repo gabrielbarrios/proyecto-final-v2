@@ -55,9 +55,15 @@ def show_user(request, pk):
 
 def show_follow_me(request, pk):
     users_owner = get_object_or_404(User, pk=pk)           
-    return render_to_response('show_follow_me.html', {
+    return render_to_response('show_follow_me.html',  {
         'users_owner': users_owner
-    }, RequestContext(request))
+    }, RequestContext(request, ))
+
+def show_profile(request, pk):
+    users_owner = get_object_or_404(User, pk=pk)           
+    return render_to_response('show_profile.html',  {
+        'users_owner': users_owner
+    }, RequestContext(request, ))
 
 
 def add_user(request):
@@ -72,22 +78,12 @@ def add_user(request):
     }, RequestContext(request))
 
 
-def add_tweet(request):
-    form = TweetForm()
-    if request.method == 'POST':
-		form = TweetForm(request.POST, request.FILES)
-		if form.is_valid():
-			form.save()
-			return redirect('users')
-    return render_to_response('add_user.html', {
-		'form': form,
-    }, RequestContext(request))
 
 def edit_user(request, pk):
-    user = get_object_or_404(User, pk=pk)
+    user = get_object_or_404(Tweet, pk=pk)
     form = UserEditForm(instance=user)
     if request.method == 'POST':
-        form = UserEditForm(request.POST, instance=user)
+        form = UserEditForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             return redirect('users')
@@ -95,8 +91,37 @@ def edit_user(request, pk):
         'form': form,
         }, RequestContext(request))
 
+
+
+#def add_tweet(request, pk):
+ #   user = get_object_or_404(Tweet, pk=pk)
+ #   form = TweetEditForm(instance=user)
+ #   if request.method == 'POST':
+ #       form = TweetEditForm(request.POST, instance=user)
+ #       if form.is_valid():
+ #           form.save()
+ #           return redirect('users')
+ #   return render_to_response('add_user.html', {
+ #       'form': form,
+ #   }, RequestContext(request))
+
+def add_tweet(request, pk):
+    form = TweetEditForm()
+    if request.method == 'POST':
+        form = TweetEditForm(request.POST)
+        if form.is_valid():
+            status = form.cleaned_data['status']
+            user = User.objects.get(user=request.user)
+            user.tweet(status)
+            return redirect('profile', username=user.user.username)
+    return render_to_response('add_user.html', {
+        'form': form,
+        }, RequestContext(request))
+
+
+
 def edit_tweet(request, pk):
-    tweet = get_object_or_404(Tweet, pk=pk)
+    tweet = get_object_or_404(User, pk=pk)
     form = TweetEditForm(instance=tweet)
     if request.method == 'POST':
         form = TweetEditForm(request.POST, instance=tweet)
@@ -106,6 +131,8 @@ def edit_tweet(request, pk):
     return render_to_response('add_user.html', {
         'form': form,
         }, RequestContext(request))
+
+
 
 def delete_user(request, pk):
     User.objects.filter(pk=pk).delete()

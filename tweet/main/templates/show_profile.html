@@ -1,0 +1,30 @@
+<html>
+<head>
+	<title>{{ users.name }} - Users</title>
+	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}estilo.css">
+</head>
+<body>
+	<a href="{% url users %}">users</a>
+    <a  href="{% url index  %}">click here return index</a>
+	<h1>nombre : {{ users_owner.users.first_name }} {{ users_owner.users.last_name }}</h1>
+	<img id="image" src="{{ MEDIA_URL }}{{ users_owner.users.image_profile }}"/>
+	<p>ID : {{ users_owner.pk }}</p>
+	<p>Nick : {{ users_owner.username }}</p>
+	<p>E-mail : {{ users_owner.email }}</p>	
+	<p>Name : {{ users_owner.users.first_name }}</p>
+	<p>Last Name : {{ users_owner.users.last_name }}</p>
+	<p>Location : {{ users_owner.users.location }}</p>
+	<p>birth Date : {{ users_owner.users.birth_date }}</p>
+	<p>Biography : {{ users_owner.users.biography }}</p>
+	<ul>
+		<li><h3>Tweets:</h3>
+			<p>{% for tweet in users_owner.users.tweets.all %}						
+			    <ol>
+				<div><li>tweet ({{ tweet.pk }}) - status: {{ tweet.status }} <br/> Created_at  :  {{tweet.created_at}} </li><br/></div>
+			    </ol>
+			    <br/>
+			{% endfor %}</p>
+		</li>
+	</ul>
+</body>
+</html>

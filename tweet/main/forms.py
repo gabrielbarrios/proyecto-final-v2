@@ -11,7 +11,8 @@ class UserEditForm(forms.ModelForm):
 	password = forms.CharField(widget = forms.PasswordInput)
 	class Meta: 
 		model = User
-		exclude = ('nick_name', 'email', 'birth_date',)
+		exclude = ('nick_name', 'email',)
+	
 
 class TweetForm(forms.ModelForm):
 	class Meta: 
@@ -21,3 +22,4 @@ class TweetEditForm(forms.ModelForm):
 	class Meta: 
 		model = Tweet
 		exclude = ('owner',)
+

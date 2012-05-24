@@ -4,13 +4,17 @@
 	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}estilo.css">
 </head>
 <body>
-	<a href="{% url users %}">User</a>
+	<a href="{% url users %}">users</a>
+    <a  href="{% url index  %}">click here return index</a>
 	<h1>nombre : {{ users_owner.users.first_name }} {{ users_owner.users.last_name }}</h1>
+	<img id="image" src="{{ MEDIA_URL }}{{ users_owner.users.image_profile }}"/>
 	<p>Nick : {{ users_owner.username }}</p>
+	
 		<ul>
-			<li><h3>Follower:</h3>
+			<li><h3>Following:</h3>
 				<p>{% for follow in users_owner.users.following.all %}
-						<div><p>ID : {{ follow.pk }} - Acosador {{ follow.first_name }}</p></div>
+						<div><p>ID : {{ follow.pk }} - Acosando a:{{ follow.first_name }}</p></div>
+						<img id="image" src="{{ MEDIA_URL }}{{ follow.image_profile }}"/>
 						<ol>
 							{% for tweet in follow.tweets.all %}
 								<div><li>tweet ({{ tweet.pk }}) - status: {{ tweet.status }} <br/> Created_at  :  {{tweet.created_at}} </li><br/></div>

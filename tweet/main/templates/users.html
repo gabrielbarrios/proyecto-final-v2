@@ -5,13 +5,17 @@
 </head>
 <body>
     <div>
-        Usuarios :
+        <h1>Usuario : {{ user.username }}</h1>
+        <br> return to profile</br>
+        <a  href="{% url index  %}">click here</a>
     </div>
     <hr/><h3>Numero de usuarios     ({{ users.count }}) </h3>
     {% for user in users.all %}
     <div>
         <h3> {{ user.users.last_name }}</h3>
-        <img id="image" src="{{ MEDIA_URL }}{{ user.users.image_profile }}"/>
+        <h3> {{ user.users.pk }}</h3>
+        <a href="{% url show_follow_me user.pk %}">See profile</a>
+        <a href="{{ MEDIA_URL }}{{ user.users.image_profile }}"><img id="image" src="{{ MEDIA_URL }}{{ user.users.image_profile }}"/></a>
 	<div class="comments">
             {% for tweet in user.users.tweets.all %}
             <div>Tweet({{ tweet.pk }})    : {{ tweet.status }}</div>
