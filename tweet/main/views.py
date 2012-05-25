@@ -1,4 +1,4 @@
-from main.models import User, Tweet
+from main.models import Profile, Tweet
 from django.shortcuts import render_to_response, redirect, get_object_or_404
 from django.template import RequestContext
 from main.forms import UserForm, TweetForm, UserEditForm, TweetEditForm
@@ -80,7 +80,7 @@ def add_user(request):
 
 
 def edit_user(request, pk):
-    user = get_object_or_404(Tweet, pk=pk)
+    user = get_object_or_404(Profile, pk=pk)
     form = UserEditForm(instance=user)
     if request.method == 'POST':
         form = UserEditForm(request.POST, request.FILES)
@@ -93,40 +93,30 @@ def edit_user(request, pk):
 
 
 
-#def add_tweet(request, pk):
- #   user = get_object_or_404(Tweet, pk=pk)
- #   form = TweetEditForm(instance=user)
- #   if request.method == 'POST':
- #       form = TweetEditForm(request.POST, instance=user)
- #       if form.is_valid():
- #           form.save()
- #           return redirect('users')
- #   return render_to_response('add_user.html', {
- #       'form': form,
- #   }, RequestContext(request))
-
-def add_tweet(request, pk):
+def add_tweet(request):    
     form = TweetEditForm()
     if request.method == 'POST':
         form = TweetEditForm(request.POST)
         if form.is_valid():
-            status = form.cleaned_data['status']
-            user = User.objects.get(user=request.user)
-            user.tweet(status)
-            return redirect('profile', username=user.user.username)
+            tweet = form.save(commit=False)
+            tweet.owner= request.user.get_profile()
+            tweet.save()
+            return redirect('users')
     return render_to_response('add_user.html', {
         'form': form,
-        }, RequestContext(request))
-
+   }, RequestContext(request))
 
 
 def edit_tweet(request, pk):
-    tweet = get_object_or_404(User, pk=pk)
+    tweet = get_object_or_404(Tweet, pk=pk)
     form = TweetEditForm(instance=tweet)
     if request.method == 'POST':
         form = TweetEditForm(request.POST, instance=tweet)
         if form.is_valid():
-            form.save()
+            tweeter = form.save(commit=False)
+            tweeter.owner= request.user.get_profile()
+            tweeter.save()
+            #form.save()
             return redirect('users')
     return render_to_response('add_user.html', {
         'form': form,

@@ -1,17 +1,18 @@
 from django import forms
-from main.models import User, Tweet
+from main.models import Profile, Tweet
 
 
 class UserForm(forms.ModelForm):
 	password = forms.CharField(widget = forms.PasswordInput)
 	class Meta: 
-		model = User
+		model = Profile
+		exclude = ('user', 'email', 'following')
 
 class UserEditForm(forms.ModelForm):
 	password = forms.CharField(widget = forms.PasswordInput)
 	class Meta: 
-		model = User
-		exclude = ('nick_name', 'email',)
+		model = Profile
+		exclude = ('email', 'following')
 	
 
 class TweetForm(forms.ModelForm):
@@ -21,5 +22,6 @@ class TweetForm(forms.ModelForm):
 class TweetEditForm(forms.ModelForm):
 	class Meta: 
 		model = Tweet
-		exclude = ('owner',)
+		exclude= 'owner' 
+
 

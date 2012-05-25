@@ -1,5 +1,5 @@
 from django.contrib import admin
-from main.models import User, Tweet
+from main.models import Profile, Tweet
 
 class UserAdmin(admin.ModelAdmin):
 	list_display = ('first_name', 'last_name', 'location', 'image_profile','biography', 'birth_date',)
@@ -9,5 +9,5 @@ class UserAdmin(admin.ModelAdmin):
 class TweetAdmin(admin.ModelAdmin):
 	list_display = ('owner', 'status',)
 
-admin.site.register(User, UserAdmin)
+admin.site.register(Profile, UserAdmin)
 admin.site.register(Tweet, TweetAdmin)

@@ -14,7 +14,7 @@
     <div>
         <h3> {{ user.users.last_name }}</h3>
         <h3> {{ user.users.pk }}</h3>
-        <a href="{% url show_follow_me user.pk %}">See profile</a>
+        <a href="{% url show_profile user.pk %}">See profile</a>
         <a href="{{ MEDIA_URL }}{{ user.users.image_profile }}"><img id="image" src="{{ MEDIA_URL }}{{ user.users.image_profile }}"/></a>
 	<div class="comments">
             {% for tweet in user.users.tweets.all %}
