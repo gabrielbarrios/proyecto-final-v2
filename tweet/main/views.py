@@ -10,16 +10,18 @@ from django.contrib import auth
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
 
-
+@login_required
 def users(request):
     users = User.objects.all()
     return render_to_response('users.html', {
         'users': users,
     },RequestContext(request))
+
     
 @login_required
 def index(request):
     return render_to_response('index.html', context_instance=RequestContext(request))
+
 
 def login(request):
     form = AuthenticationForm()
@@ -45,27 +47,30 @@ def login(request):
         'form': form,
         }, RequestContext(request))
 
-
-def show_user(request, pk):
-    users = get_object_or_404(User, pk=pk)           
-    return render_to_response('show_user.html', {
-        'users': users
-    }, RequestContext(request))
-
-
+@login_required
 def show_follow_me(request, pk):
     users_owner = get_object_or_404(User, pk=pk)           
     return render_to_response('show_follow_me.html',  {
         'users_owner': users_owner
     }, RequestContext(request, ))
 
+@login_required
 def show_profile(request, pk):
-    users_owner = get_object_or_404(User, pk=pk)           
+    users_owner = get_object_or_404(User, pk=pk)
+    usernow = Profile.objects.get(user=users_owner)
+    try:
+        Profile.objects.get(user=request.user, following=usernow)
+        follow = True
+    except Profile.DoesNotExist:
+        follow = False           
     return render_to_response('show_profile.html',  {
-        'users_owner': users_owner
+        'users_owner': users_owner,
+        'follow': follow,
+        'logueado': request.user
     }, RequestContext(request, ))
 
 
+@login_required
 def add_user(request):
     form = UserForm()
     if request.method == 'POST':
@@ -78,21 +83,20 @@ def add_user(request):
     }, RequestContext(request))
 
 
-
-def edit_user(request, pk):
-    user = get_object_or_404(Profile, pk=pk)
-    form = UserEditForm(instance=user)
+@login_required
+def edit_user(request):
     if request.method == 'POST':
-        form = UserEditForm(request.POST, request.FILES)
+        form = UserEditForm(request.POST, request.FILES, instance=Profile.objects.get(user=request.user))
         if form.is_valid():
             form.save()
-            return redirect('users')
-    return render_to_response('add_user.html', {
-        'form': form,
-        }, RequestContext(request))
+            return redirect('index')
+        else:
+            return render_to_response('index.html', {'form': form, }, RequestContext(request))
+    form = UserEditForm(instance=Profile.objects.get(user=request.user))
+    return render_to_response('add_user.html', {'form': form, }, RequestContext(request))
 
 
-
+@login_required
 def add_tweet(request):    
     form = TweetEditForm()
     if request.method == 'POST':
@@ -107,8 +111,10 @@ def add_tweet(request):
    }, RequestContext(request))
 
 
+@login_required
 def edit_tweet(request, pk):
-    tweet = get_object_or_404(Tweet, pk=pk)
+    print request.user
+    tweet = get_object_or_404(Tweet, pk=pk, owner=request.user.get_profile())
     form = TweetEditForm(instance=tweet)
     if request.method == 'POST':
         form = TweetEditForm(request.POST, instance=tweet)
@@ -122,12 +128,26 @@ def edit_tweet(request, pk):
         'form': form,
         }, RequestContext(request))
 
-
-
+@login_required
 def delete_user(request, pk):
     User.objects.filter(pk=pk).delete()
     return redirect('users')
 
+
+@login_required
 def delete_tweet(request, pk):
-    Tweet.objects.filter(pk=pk).delete()
+    Tweet.objects.filter(pk=pk, owner=request.user.get_profile()).delete()
     return redirect('users')
+
+
+@login_required
+def follow(request):
+    user = User.objects.get(id=request.POST['pk'])
+    profile = Profile.objects.get(user=user)
+    profilenow = Profile.objects.get(user=request.user)
+    try:
+        Profile.objects.get(user=request.user, following=profile)
+        profilenow.following.remove(profile)
+    except Profile.DoesNotExist:
+        profilenow.following.add(profile)
+    return redirect(request.META['HTTP_REFERER'])

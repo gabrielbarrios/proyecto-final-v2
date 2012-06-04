@@ -20,11 +20,31 @@
 		<li><h3>Tweets:</h3>
 			<p>{% for tweet in users_owner.users.tweets.all %}						
 			    <ol>
-				<div><li>tweet ({{ tweet.pk }}) - status: {{ tweet.status }} <br/> Created_at  :  {{tweet.created_at}} </li><br/></div>
+				<div><li>tweet ({{ tweet.pk }}) - status: {{ tweet.status }} <br/> Created_at  :  {{tweet.created_at}} 
+					{% if user.get_profile == tweet.owner %}
+					    <a href="{% url edit_tweet tweet.pk %}">Edit tweet</a> 
+					    <a href="{% url delete_tweet tweet.pk %}">Eliminar tweet</a> 
+				    {% endif %}
+				    </li><br/>
+				</div>
 			    </ol>
 			    <br/>
 			{% endfor %}</p>
 		</li>
 	</ul>
+	<form action="/follow/" method="post">
+                {% csrf_token %}
+                {% csrf_token %}
+                <input type="hidden" name="pk" value="{{ users_owner.pk }}">
+		<h1>user pk {{ users_owner.pk }}</h1>
+                <p>
+                	<p>Usuario logueado {{ logueado.username }}</p>
+                    {% if follow %}
+                        <input type="submit" value="unFollow">
+                    {% else %}
+                        <input type="submit" value="Follow">
+                    {% endif %}
+                </p>
+            </form>
 </body>
 </html>

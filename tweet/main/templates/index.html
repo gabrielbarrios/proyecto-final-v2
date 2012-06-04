@@ -11,11 +11,11 @@
     <br/>
     <a href="{% url show_profile user.pk %}">See profile </a>
     <br/>
-    <a href="{% url edit_user user.pk %}">Edit profile</a>
+    <a href="{% url edit_user %}">Edit profile</a>
     <br/>
     <a href="{% url add_tweet %}">add tweet</a>
     </br>
-    <a href="{% url edit_tweet user.pk %}">edit tweet</a>
-    </br>
     <a href="{% url users %}">index users</a>
+    </br>
+    <a href="{% url add_user %}">Add user</a>
 </html>
